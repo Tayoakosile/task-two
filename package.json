@@ -1,11 +1,16 @@
 {
   "name": "stage-2",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "index.mjs",
   "author": "Tayo Akosile <oluwatayoakosile@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.18.2",
+    "@fastify/mongodb": "^8.0.0",
+    "fastify": "^4.22.2",
     "mongoose": "^7.5.0"
+  },
+  "scripts": {
+    "start": "node index.mjs",
+    "watch": "nodemon index.mjs"
   }
 }
