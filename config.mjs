@@ -1,36 +1,37 @@
 import fastify from "fastify";
 import fastifyEnv from "@fastify/env";
-import MONGOPLUGIN from "@fastify/mongodb";
+import mongoose from "mongoose";
+import fastifyFormbody from "@fastify/formbody";
 
 export const PORT = process.env.port || 4000;
 
-const Fastify = fastify({ logger: true });
+const app = fastify({ logger: true });
+app.register(fastifyFormbody);
 
-const initializeDb = async () => {
-  // inject environmental variables (.env)
-  await Fastify.register(fastifyEnv, {
-    dotenv: true,
-    data: process.env,
-    schema: {
-      type: "object",
-      required: ["MONGODB_CONNECTION_STRING"],
-      properties: {
-        MONGODB_CONNECTION_STRING: {
-          type: "string",
+(async () => {
+  try {
+    await app.register(fastifyEnv, {
+      dotenv: true,
+      data: process.env,
+      schema: {
+        type: "object",
+        required: ["MONGODB_CONNECTION_STRING"],
+        properties: {
+          MONGODB_CONNECTION_STRING: {
+            type: "string",
+          },
         },
       },
-    },
-  });
+    });
 
-  //   Connect NoSql Database
+    await mongoose.connect(app.config.MONGODB_CONNECTION_STRING);
+  } catch (err) {
+    app.log.error(err);
+  }
 
-  await Fastify.register(MONGOPLUGIN, {
-    url: Fastify.config.MONGODB_CONNECTION_STRING,
-    forceClose: true,
-  });
-  await Fastify.ready();
-};
+})();
+// app.register(fastifyMongooseAPI, options);
 
-initializeDb();
+// initializeDb();
 
-export default Fastify;
+export default app;

@@ -6,8 +6,9 @@
   "license": "MIT",
   "dependencies": {
     "@fastify/env": "^4.2.0",
-    "@fastify/mongodb": "^8.0.0",
+    "@fastify/formbody": "^7.4.0",
     "fastify": "^4.22.2",
+    "fastify-mongoose-api": "^1.2.20",
     "mongoose": "^7.5.0"
   },
   "scripts": {
