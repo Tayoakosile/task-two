@@ -5,6 +5,7 @@
   "author": "Tayo Akosile <oluwatayoakosile@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "@fastify/env": "^4.2.0",
     "@fastify/mongodb": "^8.0.0",
     "fastify": "^4.22.2",
     "mongoose": "^7.5.0"
