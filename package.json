@@ -7,9 +7,14 @@
   "dependencies": {
     "@fastify/env": "^4.2.0",
     "@fastify/formbody": "^7.4.0",
+    "@fastify/swagger": "^8.10.0",
+    "@fastify/swagger-ui": "^1.9.3",
     "fastify": "^4.22.2",
-    "fastify-mongoose-api": "^1.2.20",
+    "fastify-openapi-docs": "^2.2.1",
     "mongoose": "^7.5.0"
+  },
+  "devDependencies": {
+    "randomatic": "^3.1.1"
   },
   "scripts": {
     "start": "node index.mjs",

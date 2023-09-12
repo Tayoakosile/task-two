@@ -15,28 +15,55 @@ app.get("/api", async (request, reply) => {
 });
 
 app.get("/api/:id", async (request, reply) => {
-  try {
-    const persons = await Person.find();
+  const id = request.params?.id;
 
-    reply.code(200).send(persons);
+  try {
+    const person = await Person.findOne({ id });
+
+    console.log(person, "person");
+    if (person) {
+      return reply.code(200).send(person);
+    }
+    return reply
+      .code(404)
+      .send({ message: `Person with ID '${id}' not found!` });
   } catch (error) {}
 });
 
-app.post("/api", async (request, reply) => {
-  try {
-    const name = request.body.name;
+app.post(
+  "/api",
+  {
+    schema: {
+      body: { $ref: "request#" },
+      response: {
+        200: { $ref: "response#" },
+      },
+      config: {
+        openapi: {
+          description: "Makes a request",
+          summary: "Main route",
+          tags: ["service"],
+          security: [{ jwtBearer: [] }],
+        },
+      },
+    },
+  },
+  async (request, reply) => {
+    try {
+      const name = request.body.name;
 
-    if (!(await Person.findOne({ name }))) {
-      const persons = await Person.create({ name, id: uniqueID() });
-      return reply.code(200).send({ message: "Person Created Succesfully" });
+      if (!(await Person.findOne({ name }))) {
+        const persons = await Person.create({ name, id: uniqueID() });
+        return reply.code(200).send({ message: "Person Created Succesfully" });
+      }
+      return reply
+        .code(400)
+        .send({ message: `User with the name "${name}" already Exists` });
+    } catch (error) {
+      console.log(error);
     }
-    return reply
-      .code(400)
-      .send({ message: `User with the name "${name}" already Exists` });
-  } catch (error) {
-    console.log(error);
   }
-});
+);
 
 // put
 app.delete("/api", async (request, reply) => {
@@ -44,7 +71,14 @@ app.delete("/api", async (request, reply) => {
 
   await Person.deleteOne({ name });
   return reply.code(200).send({ message: `Deleted` });
-  
+});
+
+app.delete("/api/:id", async (request, reply) => {
+  const id = request.params?.id;
+
+  await Person.deleteOne({ id }, { new: true });
+  console.log(Person, "Person");
+  return reply.code(200).send({ message: `Deleted` });
 });
 
 // put
