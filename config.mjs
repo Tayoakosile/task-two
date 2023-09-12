@@ -37,7 +37,7 @@ app.register(fastifyFormbody);
 //   },
 
 //   definitions: {
-//     Person: {
+//     User: {
 //       type: "object",
 //       required: ["name"],
 //       properties: {

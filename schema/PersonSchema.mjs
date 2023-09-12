@@ -6,6 +6,6 @@ const PersonSchema = new Schema({
   id: String  ,
 });
 
-const Person = mongoose.model("people", PersonSchema);
+const User = mongoose.model("people", PersonSchema);
 
-export default Person;
+export default User;
