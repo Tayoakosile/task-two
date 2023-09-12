@@ -1,5 +1,5 @@
 import app, { PORT } from "./config.mjs";
-import Person from "./schema/PersonSchema.mjs";
+import User from "./schema/PersonSchema.mjs";
 import { uniqueID } from "./utils/util.mjs";
 
 app.get("/", (request, reply) => {
@@ -8,7 +8,7 @@ app.get("/", (request, reply) => {
 
 app.get("/api", async (request, reply) => {
   try {
-    const persons = await Person.find();
+    const persons = await User.find();
 
     reply.code(200).send(persons);
   } catch (error) {}
@@ -18,7 +18,7 @@ app.get("/api/:id", async (request, reply) => {
   const id = request.params?.id;
 
   try {
-    const person = await Person.findOne({ id });
+    const person = await User.findOne({ id });
 
     console.log(person, "person");
     if (person) {
@@ -26,7 +26,7 @@ app.get("/api/:id", async (request, reply) => {
     }
     return reply
       .code(404)
-      .send({ message: `Person with ID '${id}' not found!` });
+      .send({ message: `User with ID '${id}' not found!` });
   } catch (error) {}
 });
 
@@ -36,9 +36,9 @@ app.post(
     try {
       const name = request.body.name;
 
-      if (!(await Person.findOne({ name }))) {
-        const persons = await Person.create({ name, id: uniqueID() });
-        return reply.code(200).send({ message: "Person Created Succesfully" });
+      if (!(await User.findOne({ name }))) {
+        const persons = await User.create({ name, id: uniqueID() });
+        return reply.code(200).send({ message: "User Created Succesfully" });
       }
       return reply
         .code(400)
@@ -53,15 +53,15 @@ app.post(
 app.delete("/api", async (request, reply) => {
   const name = request.body.name;
 
-  await Person.deleteOne({ name });
+  await User.deleteOne({ name });
   return reply.code(200).send({ message: `Deleted` });
 });
 
 app.delete("/api/:id", async (request, reply) => {
   const id = request.params?.id;
 
-  await Person.deleteOne({ id }, { new: true });
-  console.log(Person, "Person");
+  await User.deleteOne({ id }, { new: true });
+  console.log(User, "User");
   return reply.code(200).send({ message: `Deleted` });
 });
 
