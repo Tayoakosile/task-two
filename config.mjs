@@ -1,5 +1,5 @@
 import fastify from "fastify";
-import Swagger from "@fastify/swagger";
+
 import FastOpenAPI from "fastify-openapi-docs";
 
 import fastifyEnv from "@fastify/env";
@@ -84,19 +84,18 @@ app.addSchema({
   additionalProperties: false,
 });
 
-
 app.addSchema({
-  type: 'object',
-  $id: 'response',
-  description: 'The response payload',
+  type: "object",
+  $id: "response",
+  description: "The response payload",
   properties: {
     ok: {
-      type: 'boolean',
-      description: 'The operation response'
-    }
+      type: "boolean",
+      description: "The operation response",
+    },
   },
-  required: ['ok'],
-  additionalProperties: false
-})
+  required: ["ok"],
+  additionalProperties: false,
+});
 
 export default app;
