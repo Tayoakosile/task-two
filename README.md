@@ -1,5 +1,6 @@
 # User API
-
+## UML DESIGN
+![Alt text](uml-design.png)
 ### Introduction
 
 USERCRUD is an open source REST API that is capable of CRUD operations, can also handle dynamic parameters
@@ -20,7 +21,6 @@ git clone https://github.com/Tayoakosile/task-two
 
 then cd task-two
 then yarn install
-
 ```
 
 - You can either work with the default MongoDB database or use your locally installed MongoDB. Do configure to your choice in the application entry file.
@@ -29,7 +29,7 @@ then yarn install
 ### Usage
 
 - Run yarn start to start the application.
-- Connect to the API using Postman on port 4000.
+- Connect to the API using Postman on port 4000 or your specified port.
 
 ### API Endpoints
 
@@ -38,6 +38,7 @@ then yarn install
 | POST       | /api      | To add a new user                       |
 | GET        | /api      | To get list of users                    |
 | GET        | /api/:id  | To retrieve details of a single user    |
+| GET        | /api     | To retrieve details of a single user using params attached to request body    |
 | PATCH      | /api/:id  | To edit the details of a single user    |
 | DELETE     | /api/:id  | To delete a single user                 |
 | PATCH      | /api/:id  | To edit the details of a single user    |
