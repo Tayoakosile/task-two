@@ -10,7 +10,7 @@ export const PORT = process.env.port || 4000;
 
 const app = fastify({ logger: true });
 app.register(fastifyFormbody);
-// app.register(FastOpenAPI);
+
 await app.register(FastOpenAPI, {
   openapi: {
     openapi: "3.0.3",
