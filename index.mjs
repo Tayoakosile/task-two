@@ -32,22 +32,6 @@ app.get("/api/:id", async (request, reply) => {
 
 app.post(
   "/api",
-  {
-    schema: {
-      body: { $ref: "request#" },
-      response: {
-        200: { $ref: "response#" },
-      },
-      config: {
-        openapi: {
-          description: "Makes a request",
-          summary: "Main route",
-          tags: ["service"],
-          security: [{ jwtBearer: [] }],
-        },
-      },
-    },
-  },
   async (request, reply) => {
     try {
       const name = request.body.name;
