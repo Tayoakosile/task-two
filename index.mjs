@@ -6,26 +6,17 @@ import {
   validateBodyRequestNameIsValid,
 } from "./utils/util.mjs";
 
-
-
-
 app.post("/api", async (request, reply) =>
-  validateBodyRequestNameIsValid(request, reply, async () => {
+  validateBodyRequestNameIsValid(request, reply, true, async () => {
     const name = request.body?.name;
 
-    if (!(await User.findOne({ name }))) {
-      const person = await User.create({ name, id: uniqueID() });
+    const person = await User.create({ name, id: uniqueID() });
 
-      return reply
-        .code(200)
-        .send({ message: "User Created Successfully", user: person });
-    }
     return reply
-      .code(400)
-      .send({ message: `User with the name "${name}" already Exists` });
+      .code(200)
+      .send({ message: "User Created Successfully", user: person });
   })
 );
-
 
 app.get("/", (request, reply) =>
   reply.code(200).send({ message: "Hello world" })
@@ -45,22 +36,29 @@ app.get("/api/:id", async (request, reply) => {
 });
 
 app.put("/api/:id", (request, reply) =>
-  validateBodyRequestNameIsValid(request, reply, async (request, reply) => {
-    const id = `${request.params?.id}`;
-    const name = request.body?.name;
-    const person = await User.findOneAndUpdate({ id }, { name, id });
+  validateBodyRequestNameIsValid(
+    request,
+    reply,
+    true,
+    async (request, reply) => {
+      const id = `${request.params?.id}`;
+      const name = request.body?.name;
+      const person = await User.findOneAndUpdate({ id }, { name, id });
 
-    if (person) {
-      return reply.code(200).send({
-        message: `User with ID '${id}' details updated successfully!`,
-      });
+      if (person) {
+        return reply.code(200).send({
+          message: `User with ID '${id}' details updated successfully!`,
+        });
+      }
+      return reply
+        .code(404)
+        .send({ message: `User with ID '${id}' not found!` });
     }
-    return reply.code(404).send({ message: `User with ID '${id}' not found!` });
-  })
+  )
 );
 
 app.patch("/api/:id", async (request, reply) =>
-  validateBodyRequestNameIsValid(request, reply, async () => {
+  validateBodyRequestNameIsValid(request, reply, true, async () => {
     const id = `${request.params?.id}`;
     const name = request.body?.name;
 
@@ -75,9 +73,8 @@ app.patch("/api/:id", async (request, reply) =>
   })
 );
 
-
 app.delete("/api", async (request, reply) =>
-  validateBodyRequestNameIsValid(request, reply, async () => {
+  validateBodyRequestNameIsValid(request, reply, false, async () => {
     const name = request.body?.name;
 
     if (!name) {

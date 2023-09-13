@@ -8,6 +8,7 @@ export const uniqueID = () => {
 export const validateBodyRequestNameIsValid = async (
   request,
   reply,
+  shouldCheckIfNameExistInDb = false,
   callback
 ) => {
   const name = request.body?.name;
@@ -19,9 +20,15 @@ export const validateBodyRequestNameIsValid = async (
     !name
   ) {
     return reply.code(400).send({ error: `'name' must be a valid string, ` });
-  } else {
-    await callback(request, reply);
   }
+
+  const searchForUserInDb = await User.findOne({ name });
+  if (shouldCheckIfNameExistInDb && searchForUserInDb) {
+    return reply
+      .code(400)
+      .send({ message: `User with the name "${name}" already Exists,Please use a different name` });
+  }
+  await callback(request, reply);
 };
 
 export const getUserList = async (request, reply) => {
