@@ -36,7 +36,7 @@ export const getUserList = async (request, reply) => {
 
   const filteredList = persons?.map((person) => filterResByNameAndId(person));
 
-  reply.code(200).send(filteredList);
+return  reply.code(200).send(filteredList);
 };
 
 export const filterResByNameAndId = (person) => {
