@@ -4,7 +4,7 @@ export const uniqueID = () => {
   return `HNG-${randomatic("0", "2")}`;
 };
 
-export const validateRequest = async (request, reply, callback) => {
+export const validateBodyRequestNameIsValid = async (request, reply, callback) => {
   const name = request.body?.name;
 
   if (

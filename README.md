@@ -53,6 +53,10 @@ yarn install
 | PATCH      | /api/:id  | To edit the details of a single user    |
 | PUT        | /api/:id  | To replace the details of a single user |
 
+### LINKS
+- TESTS API: [POSTMAN TESTS](https://www.postman.com/security-explorer-27947040/workspace/crud-api/collection/22933989-ee1271dc-d22b-4b36-92b5-a247aca8388a?tab=tests).
+- Detailed Documentation: [Postman Documentation](https://documenter.getpostman.com/view/22933989/2s9YC4TXvT
+)
 ### Technologies Used
 
 - [NodeJS](https://nodejs.org/) This is a cross-platform runtime environment built on Chrome's V8 JavaScript engine used in running JavaScript codes on the server. It allows for installation and managing of dependencies and communication with databases.
