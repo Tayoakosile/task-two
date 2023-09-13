@@ -44,7 +44,7 @@ app.get("/api/:id", async (request, reply) => {
     const person = await User.findOne({ id });
     if (person) return reply.code(200).send(filterResByNameAndId(person));
 
-    return reply.code(404).send({ message: `User with ID '${id}' not found!` });
+    return reply.code(404).send({ message: `User with ID '${id}' not found.Please create a new user!` });
   }
   return await getUserList(request, reply);
 });
