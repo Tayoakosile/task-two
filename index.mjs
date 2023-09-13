@@ -1,5 +1,6 @@
 import app, { PORT } from "./config.mjs";
 import User from "./schema/PersonSchema.mjs";
+import UserCountSchema from "./schema/UserCount.mjs";
 import {
   filterResByNameAndId,
   getUserList,
@@ -9,20 +10,31 @@ import {
 
 app.post("/api", async (request, reply) =>
   validateBodyRequestNameIsValid(request, reply, true, async () => {
-    const name = request.body?.name;
+    const idObj = "6501eb1dc8896f804fccc0f3";
+    const count = await UserCountSchema.findById(idObj);
 
-    const person = await User.create({ name, id: uniqueID() });
+    if (count) {
+      const name = request.body?.name;
 
-    return reply.code(200).send({
-      message: "User Created Successfully",
-      user: filterResByNameAndId(person),
-    });
+      const person = await User.create({ name, id: count?.id });
+
+      const updateUser = await UserCountSchema.findByIdAndUpdate(idObj, {
+        $inc: { id: 1 },
+      });
+      console.log(updateUser,'updateUser')
+      if (updateUser) {
+        return reply.code(200).send({
+          message: "User Created Successfully",
+          user: filterResByNameAndId(person),
+        });
+      }
+    }
   })
 );
 
-app.get("/", (request, reply) =>
-  reply.code(200).send({ message: "Hello world" })
-);
+app.get("/", async (request, reply) => {
+  return reply.code(200).send({ message: "Hello world" });
+});
 
 app.get("/api", async (request, reply) => await getUserList(request, reply));
 
