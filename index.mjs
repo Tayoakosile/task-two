@@ -8,7 +8,7 @@ app.get("/", (request, reply) => {
 
 app.get("/api", async (request, reply) => {
   const name = request.body?.name;
-  console.log(request.body, "request.body", name);
+
   if (name) {
     const person = await User.find({ name });
     return reply.code(200).send(person);
@@ -24,7 +24,6 @@ app.get("/api/:id", async (request, reply) => {
 
   const person = await User.findOne({ id });
 
-  console.log(person, "person");
   if (person) {
     return reply.code(200).send(person);
   }
@@ -35,7 +34,7 @@ app.put("/api/:id", async (request, reply) => {
   const id = `${request.params?.id}`;
   const name = request.body?.name;
 
-  const person = await User.findOneAndReplace({ id }, { name });
+  const person = await User.findOneAndUpdate({ id }, { name, id });
 
   if (person) {
     return reply
@@ -49,7 +48,7 @@ app.patch("/api/:id", async (request, reply) => {
   const id = `${request.params?.id}`;
   const name = request.body?.name;
 
-  const person = await User.findOneAndUpdate({ id }, { name });
+  const person = await User.findOneAndUpdate({ id }, { name, id });
 
   if (person) {
     return reply.code(200).send(person);
@@ -77,6 +76,7 @@ app.delete("/api", async (request, reply) => {
     return reply.code(400).send({ message: "Attach name to the request body" });
   }
   const deleteUser = await User.deleteOne({ name });
+  console.log(deleteUser, "deleteUser");
 
   if (deleteUser) {
     return reply
@@ -88,11 +88,10 @@ app.delete("/api", async (request, reply) => {
 app.delete("/api/:id", async (request, reply) => {
   const id = `${request.params?.id}`;
 
-  const deleteSingleUser = await User.findByIdAndDelete({ id }, { new: true });
+  const deleteSingleUser = await User.deleteOne({ id }, { new: true });
   console.log(deleteSingleUser, "deleteSingleUser");
   return reply.code(200).send({ message: `Deleted` });
 });
-
 
 // put
 const start = async () => {
