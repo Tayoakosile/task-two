@@ -34,7 +34,7 @@ app.put("/api/:id", async (request, reply) => {
   const id = `${request.params?.id}`;
   const name = request.body?.name;
 
-  const person = await User.findOneAndReplace({ id }, { name, id });
+  const person = await User.findOneAndUpdate({ id }, { name, id });
 
   if (person) {
     return reply
