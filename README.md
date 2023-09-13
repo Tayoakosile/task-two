@@ -1,6 +1,10 @@
 # User API
 ## UML DESIGN
-![Alt text](uml-design.png)
+![Uml Design](uml-design.png)
+
+## E.R Diagram
+![![](E.R Diagram)](E.R-Diagram.png)
+
 ### Introduction
 
 USERCRUD is an open source REST API that is capable of CRUD operations, can also handle dynamic parameters
@@ -16,19 +20,24 @@ USERCRUD is an open source REST API that is capable of CRUD operations, can also
 ### Installation Guide
 
 ```
-//on your local system
+//on your local computer
+
 git clone https://github.com/Tayoakosile/task-two
 
-then cd task-two
-then yarn install
+cd task-two
+
+git checkout master
+
+yarn install
+
 ```
 
 - You can either work with the default MongoDB database or use your locally installed MongoDB. Do configure to your choice in the application entry file.
-- Create an .env file in your project root folder and add your variables. See .env.sample for assistance.
+- Create an `.env` file in your project root folder and add your variables. See `.env.sample` for assistance.
 
 ### Usage
 
-- Run yarn start to start the application.
+- Run `yarn start` to start the application.
 - Connect to the API using Postman on port 4000 or your specified port.
 
 ### API Endpoints
