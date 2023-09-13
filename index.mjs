@@ -57,8 +57,11 @@ app.post("/api", async (request, reply) =>
     const name = request.body?.name;
 
     if (!(await User.findOne({ name }))) {
-      const persons = await User.create({ name, id: uniqueID() });
-      return reply.code(200).send({ message: "User Created Succesfully" });
+      const person = await User.create({ name, id: uniqueID() });
+
+      return reply
+        .code(200)
+        .send({ message: "User Created Successfully", user: person });
     }
     return reply
       .code(400)
@@ -87,7 +90,7 @@ app.delete("/api", async (request, reply) =>
 
 app.delete("/api/:id", async (request, reply) => {
   const id = `${request.params?.id}`;
-  const deleteSingleUser = await User.deleteOne({ id }, { new: true });
+  await User.deleteOne({ id }, { new: true });
   return reply.code(200).send({ message: `Deleted` });
 });
 
@@ -97,7 +100,6 @@ const start = async () => {
     app.log.info(`server listening on ${app.server.address().port}`);
   } catch (err) {
     app.log.error(err);
-
     process.exit(1);
   }
 };
