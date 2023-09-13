@@ -1,24 +1,47 @@
 import app, { PORT } from "./config.mjs";
 import User from "./schema/PersonSchema.mjs";
-import { uniqueID, validateBodyRequestNameIsValid } from "./utils/util.mjs";
+import {
+  getUserList,
+  uniqueID,
+  validateBodyRequestNameIsValid,
+} from "./utils/util.mjs";
+
+
+
+
+app.post("/api", async (request, reply) =>
+  validateBodyRequestNameIsValid(request, reply, async () => {
+    const name = request.body?.name;
+
+    if (!(await User.findOne({ name }))) {
+      const person = await User.create({ name, id: uniqueID() });
+
+      return reply
+        .code(200)
+        .send({ message: "User Created Successfully", user: person });
+    }
+    return reply
+      .code(400)
+      .send({ message: `User with the name "${name}" already Exists` });
+  })
+);
+
 
 app.get("/", (request, reply) =>
   reply.code(200).send({ message: "Hello world" })
 );
 
-app.get("/api", async (request, reply) => {
-  const persons = (await User.find()) ?? [];
-
-  reply.code(200).send(persons);
-});
+app.get("/api", async (request, reply) => await getUserList(request, reply));
 
 app.get("/api/:id", async (request, reply) => {
   const id = `${request.params?.id}`;
-  const person = await User.findOne({ id });
+  if (id) {
+    const person = await User.findOne({ id });
+    if (person) return reply.code(200).send(person);
 
-  if (person) return reply.code(200).send(person);
-
-  return reply.code(404).send({ message: `User with ID '${id}' not found!` });
+    return reply.code(404).send({ message: `User with ID '${id}' not found!` });
+  }
+  return await getUserList(request, reply);
 });
 
 app.put("/api/:id", (request, reply) =>
@@ -52,22 +75,6 @@ app.patch("/api/:id", async (request, reply) =>
   })
 );
 
-app.post("/api", async (request, reply) =>
-  validateBodyRequestNameIsValid(request, reply, async () => {
-    const name = request.body?.name;
-
-    if (!(await User.findOne({ name }))) {
-      const person = await User.create({ name, id: uniqueID() });
-
-      return reply
-        .code(200)
-        .send({ message: "User Created Successfully", user: person });
-    }
-    return reply
-      .code(400)
-      .send({ message: `User with the name "${name}" already Exists` });
-  })
-);
 
 app.delete("/api", async (request, reply) =>
   validateBodyRequestNameIsValid(request, reply, async () => {

@@ -1,10 +1,15 @@
 import randomatic from "randomatic";
+import User from "../schema/PersonSchema.mjs";
 
 export const uniqueID = () => {
   return `HNG-${randomatic("0", "2")}`;
 };
 
-export const validateBodyRequestNameIsValid = async (request, reply, callback) => {
+export const validateBodyRequestNameIsValid = async (
+  request,
+  reply,
+  callback
+) => {
   const name = request.body?.name;
 
   if (
@@ -17,4 +22,10 @@ export const validateBodyRequestNameIsValid = async (request, reply, callback) =
   } else {
     await callback(request, reply);
   }
+};
+
+export const getUserList = async (request, reply) => {
+  const persons = (await User.find()) ?? [];
+
+  reply.code(200).send(persons);
 };
