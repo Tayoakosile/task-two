@@ -63,9 +63,10 @@ yarn install
 - [FastifyJs](https://fastify.dev/) This is a NodeJS web application framework.
 - [MongoDB](https://www.mongodb.com/) This is a free open source NOSQL document database with scalability and flexibility. Data are stored in flexible JSON-like documents.
 - [Mongoose ODM](https://mongoosejs.com/) This makes it easy to write MongoDB validation by providing a straight-forward, schema-based solution to model to application data.
+- [UML Diagram](https://www.websequencediagrams.com/)  This was used to draw the UML diagram!
+- [Smart Draw](https://www.smartdraw.com/)  This was used to draw the E.R diagram
 
 ### Author
-
 - [Tayo Akosile](https://github.com/tayoakosile)
 - ![Full Stack Javascript Developer](https://avatars.githubusercontent.com/u/94724674?v=4)
 
