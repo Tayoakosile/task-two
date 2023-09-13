@@ -7,63 +7,92 @@ app.get("/", (request, reply) => {
 });
 
 app.get("/api", async (request, reply) => {
-  try {
-    const persons = await User.find();
+  const name = request.body?.name;
+  console.log(request.body, "request.body", name);
+  if (name) {
+    const person = await User.find({ name });
+    return reply.code(200).send(person);
+  }
 
-    reply.code(200).send(persons);
-  } catch (error) {}
+  const persons = await User.find();
+
+  reply.code(200).send(persons);
 });
 
 app.get("/api/:id", async (request, reply) => {
-  const id = request.params?.id;
+  const id = `${request.params?.id}`;
 
-  try {
-    const person = await User.findOne({ id });
+  const person = await User.findOne({ id });
 
-    console.log(person, "person");
-    if (person) {
-      return reply.code(200).send(person);
-    }
-    return reply
-      .code(404)
-      .send({ message: `User with ID '${id}' not found!` });
-  } catch (error) {}
+  console.log(person, "person");
+  if (person) {
+    return reply.code(200).send(person);
+  }
+  return reply.code(404).send({ message: `User with ID '${id}' not found!` });
 });
 
-app.post(
-  "/api",
-  async (request, reply) => {
-    try {
-      const name = request.body.name;
+app.put("/api/:id", async (request, reply) => {
+  const id = `${request.params?.id}`;
+  const name = request.body?.name;
 
-      if (!(await User.findOne({ name }))) {
-        const persons = await User.create({ name, id: uniqueID() });
-        return reply.code(200).send({ message: "User Created Succesfully" });
-      }
-      return reply
-        .code(400)
-        .send({ message: `User with the name "${name}" already Exists` });
-    } catch (error) {
-      console.log(error);
-    }
+  const person = await User.findOneAndReplace({ id }, { name });
+
+  if (person) {
+    return reply
+      .code(200)
+      .send({ message: `User with ID '${id}' details updated successfully!` });
   }
-);
+  return reply.code(404).send({ message: `User with ID '${id}' not found!` });
+});
+
+app.patch("/api/:id", async (request, reply) => {
+  const id = `${request.params?.id}`;
+  const name = request.body?.name;
+
+  const person = await User.findOneAndUpdate({ id }, { name });
+
+  if (person) {
+    return reply.code(200).send(person);
+  }
+  return reply.code(404).send({ message: `User with ID '${id}' not found!` });
+});
+
+app.post("/api", async (request, reply) => {
+  const name = request.body?.name;
+
+  if (!(await User.findOne({ name }))) {
+    const persons = await User.create({ name, id: uniqueID() });
+    return reply.code(200).send({ message: "User Created Succesfully" });
+  }
+  return reply
+    .code(400)
+    .send({ message: `User with the name "${name}" already Exists` });
+});
 
 // put
 app.delete("/api", async (request, reply) => {
-  const name = request.body.name;
+  const name = request.body?.name;
 
-  await User.deleteOne({ name });
-  return reply.code(200).send({ message: `Deleted` });
+  if (!name) {
+    return reply.code(400).send({ message: "Attach name to the request body" });
+  }
+  const deleteUser = await User.deleteOne({ name });
+
+  if (deleteUser) {
+    return reply
+      .code(200)
+      .send({ message: `User Details Deleted Successfully!` });
+  }
 });
 
 app.delete("/api/:id", async (request, reply) => {
-  const id = request.params?.id;
+  const id = `${request.params?.id}`;
 
-  await User.deleteOne({ id }, { new: true });
-  console.log(User, "User");
+  const deleteSingleUser = await User.findByIdAndDelete({ id }, { new: true });
+  console.log(deleteSingleUser, "deleteSingleUser");
   return reply.code(200).send({ message: `Deleted` });
 });
+
 
 // put
 const start = async () => {
