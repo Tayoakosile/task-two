@@ -66,7 +66,7 @@ app.put("/api/:id", (request, reply) =>
       }
       return reply
         .code(404)
-        .send({ message: `User with ID '${id}' not found!` });
+        .send({ message: `User with ID '${id}' not found, Please create a new user!` });
     }
   )
 );
@@ -83,7 +83,7 @@ app.patch("/api/:id", async (request, reply) =>
         message: `User with ID '${id}' details updated successfully!`,
       });
     }
-    return reply.code(404).send({ message: `User with ID '${id}' not found!` });
+    return reply.code(404).send({ message: `User with ID '${id}' not found.Please create a new user!` });
   })
 );
 
