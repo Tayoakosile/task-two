@@ -1,6 +1,7 @@
 import app, { PORT } from "./config.mjs";
 import User from "./schema/PersonSchema.mjs";
 import {
+  filterResByNameAndId,
   getUserList,
   uniqueID,
   validateBodyRequestNameIsValid,
@@ -12,9 +13,10 @@ app.post("/api", async (request, reply) =>
 
     const person = await User.create({ name, id: uniqueID() });
 
-    return reply
-      .code(200)
-      .send({ message: "User Created Successfully", user: person });
+    return reply.code(200).send({
+      message: "User Created Successfully",
+      user: filterResByNameAndId(person),
+    });
   })
 );
 
@@ -28,7 +30,7 @@ app.get("/api/:id", async (request, reply) => {
   const id = `${request.params?.id}`;
   if (id) {
     const person = await User.findOne({ id });
-    if (person) return reply.code(200).send(person);
+    if (person) return reply.code(200).send(filterResByNameAndId(person));
 
     return reply.code(404).send({ message: `User with ID '${id}' not found!` });
   }

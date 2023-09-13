@@ -24,9 +24,9 @@ export const validateBodyRequestNameIsValid = async (
 
   const searchForUserInDb = await User.findOne({ name });
   if (shouldCheckIfNameExistInDb && searchForUserInDb) {
-    return reply
-      .code(400)
-      .send({ message: `User with the name "${name}" already Exists,Please use a different name` });
+    return reply.code(400).send({
+      message: `User with the name "${name}" already Exists,Please use a different name`,
+    });
   }
   await callback(request, reply);
 };
@@ -34,5 +34,11 @@ export const validateBodyRequestNameIsValid = async (
 export const getUserList = async (request, reply) => {
   const persons = (await User.find()) ?? [];
 
-  reply.code(200).send(persons);
+  const filteredList = persons?.map((person) => filterResByNameAndId(person));
+
+  reply.code(200).send(filteredList);
+};
+
+export const filterResByNameAndId = (person) => {
+  return { id: person?.id, name: person?.name };
 };
