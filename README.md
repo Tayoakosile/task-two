@@ -29,7 +29,7 @@ cd task-two
 git checkout master
 
 yarn install
-
+    
 ```
 
 - You can either work with the default MongoDB database or use your locally installed MongoDB. Do configure to your choice in the application entry file.
