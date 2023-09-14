@@ -1,13 +1,15 @@
 # User API
+
+### Introduction
+
+USERCRUD is an open source REST API that is capable of CRUD operations, can also handle dynamic parameters. One can edit,patch and create users.
+
 ## UML DESIGN
 ![Uml Design](uml-design.png)
 
 ## E.R Diagram
 ![![](E.R Diagram)](E.R-Diagram.png)
 
-### Introduction
-
-USERCRUD is an open source REST API that is capable of CRUD operations, can also handle dynamic parameters
 
 ### Features
 
